@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Message Detail - dihmail{% endblock %}
+{% block content %}
+<div class="message-detail">
+    <h2>Message #{{ detail.id }}</h2>
+    <div class="card">
+        <p><strong>From:</strong> {{ detail.sender_local }}:dih:domain.com</p>
+        <p><strong>To:</strong> {{ detail.recipient_local }}:dih:domain.com</p>
+        <p><strong>Received:</strong> {{ detail.created_at }}</p>
+    </div>
+    <div class="card">
+        <h3>Decrypted Message</h3>
+        <div class="message-content">{{ plaintext }}</div>
+    </div>
+    <div class="card technical">
+        <h3>Technical Details</h3>
+        <p><strong>Ciphertext:</strong> <code>{{ detail.ciphertext[:50] }}...</code></p>
+        <p><strong>Key (base64):</strong> <code>{{ detail.key[:40] }}...</code></p>
+        <p><strong>Nonce:</strong> <code>{{ detail.nonce }}</code></p>
+        <p><strong>Tag:</strong> <code>{{ detail.tag }}</code></p>
+        <p class="warning">⚠️ Key stored with message - for demo only!</p>
+    </div>
+    <a href="{{ url_for('inbox') }}" class="btn-secondary">Back to Inbox</a>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dihmail - Test Registration & Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #667eea; }
+        h2 { color: #555; }
+        .step {
+            background: #e8f4f8;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn:hover { background: #5568d3; }
+    </style>
+</head>
+<body>
+    <h1>🔐 dihmail - Registration & Login Test Guide</h1>
+    
+    <div class="section">
+        <h2>Current Issue: Can't Login After Registration</h2>
+        <div class="warning">
+            <strong>⚠️ Common Problem:</strong> You're using a <strong>different password</strong> to login than the one you used during registration!
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Step-by-Step Instructions</h2>
+        
+        <div class="step">
+            <h3>Step 1: Clear Old Data (Optional)</h3>
+            <p>If you want to start fresh, delete the database:</p>
+            <code>Remove-Item dihmail.db</code>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Register a New Account</h3>
+            <p><strong>IMPORTANT:</strong> Write down your password!</p>
+            <ol>
+                <li>Go to: <a href="http://127.0.0.1:5000/register" class="btn">Register Page</a></li>
+                <li>Enter username: <code>testuser</code></li>
+                <li>Enter password: <code>Password123</code> (or any password you'll remember)</li>
+                <li>Confirm the same password</li>
+                <li>Click "Register"</li>
+            </ol>
+            <p>✅ You should see: <em>"User testuser registered successfully! You can now login with the password you just created."</em></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Login with THE SAME Password</h3>
+            <p>After registration, you'll be redirected to login:</p>
+            <ol>
+                <li>Enter username: <code>testuser</code> (same as registration)</li>
+                <li>Enter password: <code>Password123</code> <strong>(MUST be the SAME as registration!)</strong></li>
+                <li>Click "Login"</li>
+            </ol>
+            <p>✅ You should now be logged in and see the dashboard!</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Debugging Tips</h2>
+        <ul>
+            <li><strong>Error: "User not found"</strong> → You mistyped the username, or it wasn't registered</li>
+            <li><strong>Error: "Invalid password"</strong> → You're entering a different password than you used during registration</li>
+            <li><strong>Remember:</strong> Passwords are case-sensitive! <code>password</code> ≠ <code>Password</code></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🚀 Quick Test</h2>
+        <p>Use these exact credentials for testing:</p>
+        <div style="background: #f4f4f4; padding: 15px; border-radius: 5px; margin: 10px 0;">
+            <strong>Username:</strong> <code>demo</code><br>
+            <strong>Password:</strong> <code>demo123</code>
+        </div>
+        <p>
+            <a href="http://127.0.0.1:5000/register" class="btn">Go to Register</a>
+            <a href="http://127.0.0.1:5000/login" class="btn">Go to Login</a>
+            <a href="http://127.0.0.1:5000" class="btn">Go to Home</a>
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>📊 Current Users in Database</h2>
+        <p>Check existing users by running:</p>
+        <code>python -c "from db import *; import sqlite3; conn = sqlite3.connect('dihmail.db'); cur = conn.cursor(); cur.execute('SELECT id, local FROM users'); print([r for r in cur.fetchall()])"</code>
+    </div>
+</body>
+</html>

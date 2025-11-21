@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}dihmail{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container" style="padding:0 20px;">
+            <div style="display:flex;align-items:center;gap:18px;">
+                <img src="{{ url_for('static', filename='dihmail.png') }}" alt="logo" class="logo">
+                <h1 style="font-size:1.4rem;color:#9fa8ff;font-weight:600;">dihmail</h1>
+            </div>
+        </div>
+    </header>
+    <div class="container" style="display:flex;align-items:flex-start;gap:26px;">
+      {% if session.user %}
+      <aside style="width:220px;display:flex;flex-direction:column;gap:12px;margin-top:30px;">
+        <a class="btn-primary" href="{{ url_for('send') }}">Compose</a>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <a href="{{ url_for('inbox') }}" style="color:#cfcfcf;text-decoration:none;padding:8px 10px;border-radius:6px;background:#1e1e1e;">Inbox</a>
+          <a href="{{ url_for('dashboard') }}" style="color:#cfcfcf;text-decoration:none;padding:8px 10px;border-radius:6px;background:#1e1e1e;">Dashboard</a>
+          <a href="{{ url_for('logout') }}" style="color:#cfcfcf;text-decoration:none;padding:8px 10px;border-radius:6px;background:#1e1e1e;">Logout</a>
+        </div>
+      </aside>
+      {% endif %}
+      <main style="flex:1;min-width:0;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 dihmail - Experimental encrypted messaging</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+cryptography>=41,<43
+flask>=3.0,<4.0
+bcrypt>=5.0,<6.0
+bleach>=6.0,<7.0

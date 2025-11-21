@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}dihmail{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='dihmail.png') }}" alt="logo" class="logo">
+            </div>
+            {% if session.user %}
+            <nav>
+                <a href="{{ url_for('dashboard') }}"><span class="material-icons">dashboard</span></a>
+                <a href="{{ url_for('inbox') }}"><span class="material-icons">inbox</span></a>
+                <a href="{{ url_for('send') }}"><span class="material-icons">send</span></a>
+                <a href="{{ url_for('logout') }}"><span class="material-icons">logout</span></a>
+            </nav>
+            {% endif %}
+        </div>
+    </header>
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 dihmail - Experimental encrypted messaging</p>
+        </div>
+    </footer>
+</body>
+</html>
