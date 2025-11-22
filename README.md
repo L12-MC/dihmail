@@ -14,9 +14,19 @@ Encryption: Messages are encrypted with a freshly generated symmetric AES-256-GC
 ## Installation
 
 Install dependencies:
+Install dependencies (Windows batch scripts and Linux shell versions are in `scripts/`):
 
 ```powershell
 pip install -r requirements.txt
+Or use the helper script (from project root):
+```powershell
+scripts\install.bat
+```
+Linux:
+```bash
+cd scripts
+bash install.sh
+```
 ```
 
 Optional: point the application at a specific database file (shared web instance) by setting `DIHMAIL_DB_FILE` before starting:
