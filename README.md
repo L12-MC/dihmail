@@ -96,5 +96,3 @@ python app.py
 
 If `DIHMAIL_MASTER_KEY` is absent, a `master.key` file is generated automatically.
 
-## License
-No license specified. Use at your own risk.
