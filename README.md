@@ -18,6 +18,9 @@ Install dependencies (Windows batch scripts and Linux shell versions are in `scr
 
 ```powershell
 pip install -r requirements.txt
+pip install pyinstaller
+```
+
 Or use the helper script (from project root):
 ```powershell
 scripts\install.bat
@@ -27,7 +30,7 @@ Linux:
 cd scripts
 bash install.sh
 ```
-```
+
 
 Optional: point the application at a specific database file (shared web instance) by setting `DIHMAIL_DB_FILE` before starting:
 
