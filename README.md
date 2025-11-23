@@ -1,4 +1,4 @@
-# dihmail
+# dihmail 🥀🥀
 
 A minimal experimental encrypted messaging system with custom address format and symmetric encryption.
 
