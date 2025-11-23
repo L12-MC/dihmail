@@ -1,32 +1,58 @@
 {% extends "base.html" %}
 {% block title %}Inbox - dihmail{% endblock %}
 {% block content %}
-<div class="inbox-container">
-    <h2>Inbox for {{ user }}</h2>
-    {% if messages %}
-        <table class="message-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>From</th>
-                    <th>Received</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for mid, sender, recipient, created in messages %}
-                <tr>
-                    <td>{{ mid }}</td>
-                    <td>{{ sender }}:dih:domain.com</td>
-                    <td>{{ created }}</td>
-                    <td><a href="{{ url_for('message_detail', mid=mid) }}" class="btn-small">View</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="empty-state">No messages yet.</p>
-    {% endif %}
-    <a href="{{ url_for('dashboard') }}" class="btn-secondary">Back to Dashboard</a>
+<div class="inbox-layout">
+    <div>
+        <div class="search-bar">
+            <span style="font-size:14px;">🔍</span>
+            <input type="text" placeholder="Search messages" />
+            <span style="cursor:pointer;" onclick="document.querySelector('.search-bar input').value=''">✕</span>
+        </div>
+        <div class="card-list">
+            {% for mid, sender, recipient, created in messages %}
+            <div class="msg-card" data-mid="{{ mid }}" style="cursor:pointer;">
+                <div style="font-size:13px;font-weight:600;color:#d8dae0;">{{ sender }}</div>
+                <div style="font-size:11px;color:#9aa0a8;">#{{ mid }} • {{ created }}</div>
+            </div>
+            {% endfor %}
+            {% if not messages %}
+            <div class="msg-card" style="justify-content:center;align-items:center;font-style:italic;color:#666;">Empty inbox</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="detail-pane">
+        <h3 id="preview-title">Inbox</h3>
+        <div class="detail-meta" id="preview-meta">Select a message to view details.</div>
+        <div class="fade-divider"></div>
+        <div class="detail-body" id="preview-body">&nbsp;</div>
+        <div id="preview-attachments" style="margin-top:16px;"></div>
+    </div>
 </div>
+<script>
+document.querySelectorAll('.msg-card[data-mid]').forEach(card => {
+    card.addEventListener('click', async () => {
+        const mid = card.dataset.mid;
+        try {
+            const resp = await fetch(`/api/message/${mid}`);
+            const data = await resp.json();
+            if (data.error) {
+                document.getElementById('preview-body').textContent = 'Error: ' + data.error;
+                return;
+            }
+            document.getElementById('preview-title').textContent = `From ${data.sender}`;
+            document.getElementById('preview-meta').textContent = `To: ${data.recipient} • ${data.created}`;
+            document.getElementById('preview-body').innerHTML = data.body;
+            const attDiv = document.getElementById('preview-attachments');
+            if (data.attachments && data.attachments.length > 0) {
+                attDiv.innerHTML = '<strong style="color:#c9ced6;">Attachments:</strong><br>' +
+                    data.attachments.map(a => `<a href="/attachment/${a[0]}" style="color:#7dd3fc;margin-right:12px;">${a[1]}</a>`).join('');
+            } else {
+                attDiv.innerHTML = '';
+            }
+        } catch (err) {
+            document.getElementById('preview-body').textContent = 'Failed to load message.';
+        }
+    });
+});
+</script>
 {% endblock %}

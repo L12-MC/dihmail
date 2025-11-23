@@ -105,7 +105,9 @@ def send():
         content = raw_html if raw_html else message_plain
         if raw_html:
             # sanitize HTML
-            allowed_tags = bleach.sanitizer.ALLOWED_TAGS + ["p","span","div","br","strong","em","u","ul","ol","li","blockquote","code","pre"]
+            base_tags = list(bleach.sanitizer.ALLOWED_TAGS)
+            extra = ["p","span","div","br","strong","em","u","ul","ol","li","blockquote","code","pre"]
+            allowed_tags = list(dict.fromkeys(base_tags + extra))
             content = bleach.clean(raw_html, tags=allowed_tags, strip=True)
         if not recipient or not content:
             flash("Recipient and message required", "error")
@@ -161,6 +163,26 @@ def attachment_download(aid):
     except Exception as e:
         flash(str(e), "error")
         return redirect(url_for('inbox'))
+
+@app.route("/api/message/<int:mid>")
+def api_message_preview(mid):
+    if "user" not in session:
+        from flask import jsonify
+        return jsonify({"error": "unauthorized"}), 401
+    try:
+        detail = get_message_detail(mid)
+        plaintext = decrypt_message_id(mid)
+        sender_addr = build_address(detail['sender_local'])
+        recipient_addr = build_address(detail['recipient_local'])
+        from flask import jsonify
+        return jsonify({"id": mid, "sender": sender_addr, "recipient": recipient_addr, "created": detail['created_at'], "body": plaintext, "attachments": detail['attachments']})
+    except Exception as e:
+        from flask import jsonify
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

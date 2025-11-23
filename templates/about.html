@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}About - dihmail{% endblock %}
+{% block content %}
+<div class="about-page" style="max-width:680px;margin:40px auto;padding:32px;background:#1e1e22;border:1px solid #2a2d33;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.4);">
+  <h1 style="margin-top:0;font-size:2rem;background:linear-gradient(90deg,#7dd3fc,#818cf8,#c084fc);-webkit-background-clip:text;color:transparent;">dihmail</h1>
+  <p style="line-height:1.5;color:#c9ced6;font-size:15px;">
+    dihmail is an experimental, encrypted messaging system featuring per‑message symmetric AES‑256‑GCM encryption with a wrapped key (envelope encryption) design, rich text support, and encrypted attachments. It explores alternative addressing via random local parts (alias:dih:domain) and optional multi‑platform interfaces (web + desktop).
+  </p>
+  <p style="line-height:1.5;color:#c9ced6;font-size:15px;">
+    This project is in active evolution & not intended for production use. Expect breaking changes and security refinements.
+  </p>
+  <div style="margin:24px 0;padding:16px;background:#24272e;border:1px solid #2f333b;border-radius:8px;">
+    <strong style="display:block;margin-bottom:8px;color:#e2e8f0;">Repository</strong>
+    <a href="https://github.com/L12-MC/dihmail" target="_blank" rel="noopener" style="color:#7dd3fc;text-decoration:none;font-weight:500;">github.com/L12-MC/dihmail →</a>
+  </div>
+  <p style="font-size:12px;color:#6b7280;">&copy; 2025 dihmail • Experimental research & learning tool.</p>
+</div>
+{% endblock %}
