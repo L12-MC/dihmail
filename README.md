@@ -14,7 +14,8 @@ Encryption: Messages are encrypted with a freshly generated symmetric AES-256-GC
 ## Installation
 
 Install dependencies:
-Install dependencies (Windows batch scripts and Linux shell versions are in `scripts/`):
+
+(Windows batch scripts and Linux shell versions are in `scripts/`):
 
 ```powershell
 pip install -r requirements.txt
@@ -58,8 +59,6 @@ Features:
 - **Send**: Send encrypted messages to any dihmail address
 - **Inbox**: View received messages
 - **Decrypt**: View decrypted message contents
-
-The logo (`dihmail.png`) is displayed in the header of all pages.
 
 ## CLI Usage (Alternative)
 
