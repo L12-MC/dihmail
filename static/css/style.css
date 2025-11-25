@@ -193,12 +193,18 @@ form .btn-primary, form .btn-secondary { animation-delay: 0.45s; }
 }
 
 .btn-secondary {
-    background: #455a64;
+    background: #5e8597;
     color: white;
+    border: 0.2px solid lightblue;
 }
 
-.btn-secondary:hover {
-    background: #37474f;
+.btn-secondary:hover {linear-gradient(135deg, rgba(66, 165, 245, 0.3), rgba(30, 136, 229, 0.4));
+    background: #82bad4;
+    color: black;
+    transform: scale(2);
+    box-shadow: #37474f 0 4px 16px;
+    border: 0.2px solid rgb(23, 26, 94);
+    text-shadow: 0 0 8px lightskyblue;
 }
 
 .btn-small {
