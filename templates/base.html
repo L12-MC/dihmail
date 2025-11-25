@@ -25,20 +25,88 @@
                 {% endif %}
             </aside>
             <main class="main-pane">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        <div id="notification-container"></div>
         {% block content %}{% endblock %}
       </main>
     </div>
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 dihmail - Experimental encrypted messaging</p>
-        </div>
-    </footer>
+    <script>
+    // Store nav order for directional transitions
+    const navOrder = ['{{ url_for("about") }}', '{{ url_for("inbox") }}', '{{ url_for("send") }}', '{{ url_for("dashboard") }}', '{{ url_for("logout") }}'];
+    const currentPath = window.location.pathname;
+    const currentIndex = navOrder.indexOf(currentPath);
+    
+    // Store navigation direction in sessionStorage
+    if (currentIndex !== -1) {
+        sessionStorage.setItem('lastNavIndex', currentIndex);
+    }
+    
+    // Apply entry animation based on previous navigation
+    const lastIndex = parseInt(sessionStorage.getItem('lastNavIndex') || currentIndex);
+    const mainPane = document.querySelector('.main-pane');
+    
+    if (mainPane && lastIndex !== currentIndex) {
+        if (currentIndex > lastIndex) {
+            // Going down in nav - enter from top
+            mainPane.style.animation = 'slideUp 0.95s var(--ease-curve)';
+        } else {
+            // Going up in nav - enter from top
+            mainPane.style.animation = 'slideDown 0.95s var(--ease-curve)';
+        }
+    }
+    
+    // Intercept navigation clicks
+    document.querySelectorAll('.nav-icons a, .logo-wrap a').forEach((link, idx) => {
+        link.addEventListener('click', (e) => {
+            const targetPath = link.getAttribute('href');
+            const targetIndex = navOrder.indexOf(targetPath);
+            
+            if (targetIndex !== -1 && targetIndex !== currentIndex) {
+                e.preventDefault();
+                
+                // Apply exit animation and navigate immediately
+                if (targetIndex > currentIndex) {
+                    mainPane.classList.add('page-exit-up');
+                } else {
+                    mainPane.classList.add('page-exit-down');
+                }
+                
+                window.location.href = targetPath;
+            }
+        });
+    });
+    
+    // Custom notification system
+    function showNotification(message, category = 'info') {
+        const container = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${category}`;
+        
+        // Add icon based on category
+        let icon = '';
+        if (category === 'success') icon = '✓';
+        else if (category === 'error') icon = '✕';
+        else if (category === 'info') icon = 'ℹ';
+        
+        notification.innerHTML = `<span class="notification-icon">${icon}</span><span class="notification-text">${message}</span>`;
+        container.appendChild(notification);
+        
+        // Auto-remove after 4 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.5s var(--notification-curve) forwards';
+            setTimeout(() => notification.remove(), 500);
+        }, 4000);
+    }
+    
+    // Show flash messages from server
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            window.addEventListener('DOMContentLoaded', () => {
+                {% for category, message in messages %}
+                    showNotification({{ message|tojson }}, {{ category|tojson }});
+                {% endfor %}
+            });
+        {% endif %}
+    {% endwith %}
+    </script>
 </body>
 </html>

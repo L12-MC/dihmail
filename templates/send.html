@@ -10,14 +10,11 @@
             <small>Format: &lt;local&gt;:dih:domain.com</small>
         </div>
         <div class="form-group">
-            <label>Rich Text:</label>
-            <div id="editor" style="background:#121212;color:#e0e0e0;min-height:160px;border:1px solid #333;border-radius:6px;padding:8px;"></div>
+            <label>Message:</label>
+            <div id="editor" style="background:#121212;color:#e0e0e0;min-height:200px;border:1px solid #333;border-radius:6px;padding:8px;"></div>
             <input type="hidden" name="rich_html" id="rich_html">
-            <small>You can format text; if left empty, plain textarea below is used.</small>
-        </div>
-        <div class="form-group">
-            <label for="message">Plain Fallback:</label>
-            <textarea id="message" name="message" rows="4"></textarea>
+            <input type="hidden" name="message" id="message">
+            <small>Format your message with rich text. Plain text fallback is generated automatically.</small>
         </div>
         <div class="form-group">
             <label for="attachments">Attachments:</label>
@@ -34,6 +31,8 @@
   var quill = new Quill('#editor', { theme: 'snow' });
   document.querySelector('form').addEventListener('submit', function(){
      document.getElementById('rich_html').value = quill.root.innerHTML.trim();
+     // Generate plain text fallback automatically
+     document.getElementById('message').value = quill.getText().trim();
   });
 </script>
 {% endblock %}
